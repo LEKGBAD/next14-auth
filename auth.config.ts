@@ -6,6 +6,7 @@ import Google from "next-auth/providers/google"
 import type { NextAuthConfig } from "next-auth"
 import { LoginSchema } from "./schemas"
 import { getUserByEmail } from "./data/user"
+import { unknown } from "zod"
 
 export default {
   providers: [
@@ -18,7 +19,7 @@ export default {
       clientSecret:process.env.GITHUB_CLIENT_SECRET,
     }),
     Credentials({
-    async authorize(credentials){
+    async authorize(credentials):Promise<any>{
       const validatedFields=LoginSchema.safeParse(credentials)
 
       if(validatedFields.success){
@@ -32,6 +33,7 @@ export default {
         if(passwordMatch) return user
       }
       return null
+      
      
     }
   })],

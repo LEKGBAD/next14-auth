@@ -29,7 +29,7 @@ const NewVerificationForm = () => {
                 setError("Something went wrong!")
             }
         )
-    },[token])
+    },[token,success,error])
 
     useEffect(()=>{
         onSubmit()

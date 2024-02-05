@@ -6,6 +6,7 @@ import { getUserById } from "./data/user"
 import { UserRole } from "@prisma/client"
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation"
 import { getAccountByUserId } from "./data/account"
+import { type Session } from "next-auth"
 
 declare module "next-auth" {
    interface User {
@@ -53,7 +54,7 @@ error:"/auth/error",
       }
       return true
     },
-    async session({session,token}){
+    async session({session,token}:{session:Session,token?:any}){
       if(session.user && token.sub){
         session.user.id=token.sub  
       }
