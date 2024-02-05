@@ -44,7 +44,7 @@ const LoginForm = () => {
         setError("");
         setSuccess("");
         startTransition(()=>{
-            login(values,callbackUrl!).then((data)=>{
+            login(values,callbackUrl || undefined).then((data)=>{
                 if(data?.error){
                     form.reset();
                     setError(data.error)

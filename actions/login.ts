@@ -46,18 +46,20 @@ export const login=async (values:z.infer<typeof LoginSchema>,callbackurl?:string
             })
             const existingTwoFactorConfirmation=await getTwoFactorConfirmationByUserId(existingUser.id)
             if(existingTwoFactorConfirmation){
+                console.log({old:existingTwoFactorConfirmation.id})
                 await db.twoFactorConfirmation.delete({
                     where:{
-                        id:existingUser.id
+                        userId:existingUser.id
                     }
                 })
             }
             
-            await db.twoFactorConfirmation.create({
+            const newTwoFactorConfirmation=await db.twoFactorConfirmation.create({
                 data:{
                   userId:existingUser.id
                 }
               })
+              console.log({new:newTwoFactorConfirmation.id})
         }
         else{
             const twoFactorToken=await generateTwoFactorToken(existingUser.email);
@@ -78,7 +80,7 @@ export const login=async (values:z.infer<typeof LoginSchema>,callbackurl?:string
         if(err instanceof AuthError){
             switch(err.type){
                 case "CredentialsSignin":
-                    return {error:"Invalide credentials"}
+                    return {error:"Invalid credentials"}
                 default:
                     return {error:"Something went wrong"}
             }
